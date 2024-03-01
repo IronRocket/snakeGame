@@ -6,10 +6,11 @@ from pygame_widgets.button import Button
 
 
 class Engine:
-    def __init__(self,width,height,gridSize) -> None:
+    def __init__(self,width:int,height:int,gridSize:int) -> None:
         self.width = width
         self.height = height
         self.gridSize = gridSize
+        self.border = False
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((width, height), pygame.RESIZABLE, 32)
         pygame.display.set_caption('Snake')
@@ -17,6 +18,7 @@ class Engine:
 
 
     def updateScreen(self,width:int,height:int) -> None:
+        self.surface = pygame.Surface(self.screen.get_size())
         self.width = width
         self.height = height
 
@@ -46,6 +48,20 @@ class Menu:
             radius=20,
             onClick=lambda: self.toggle()
         )
+        borderWidth,borderHeight = self.engine.width//7,self.engine.height//10
+        self.borderButton = Button(self.engine.screen,
+            self.engine.width-borderWidth,0,
+            borderWidth,borderHeight,
+
+            text='Border On',
+            fontSize=20,
+            margin=20,
+            inactiveColour=(200, 50, 0),
+            hoverColour=(150, 0, 0),
+            pressedColour=(0, 200, 20),
+            radius=20,
+            onClick=lambda: self.toggleBorderCollision()
+        )
         self.font = pygame.font.SysFont('Comic Sans MS', resetHeight//3)
         self.help = self.font.render('Press m to toggle menu', True, (0,0,0))
         self.r1 = self.help.get_rect()
@@ -72,6 +88,14 @@ class Menu:
 
     def toggle(self)->None:
         self.state = not self.state
+
+    def toggleBorderCollision(self)->None:
+        if self.engine.border:
+            self.borderButton.setText('Border Off')
+            self.engine.border = False
+        else:
+            self.borderButton.setText('Border On')
+            self.engine.border = True
 
     def getGrayGame(self)->pygame.Surface:
         men = pygame.Surface(self.engine.screen.get_size())

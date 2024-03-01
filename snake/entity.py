@@ -15,8 +15,8 @@ class Snake:
 
     def update(self):
         cur = self.get_head_position()
-        if self.border:
-            if cur[0]+21 > self.engine.width or  cur[1]+21 > self.engine.height or cur[0]-21 > self.engine.width or  cur[1]-21 > self.engine.height:
+        if self.engine.border:
+            if cur[0]+20 >= self.engine.width or  cur[1]+20 >= self.engine.height or cur[0]-20 >= self.engine.width or  cur[1]-20 >= self.engine.height:
                 self.reset()
                 return
         x, y = self.direction
